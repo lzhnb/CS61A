@@ -12,9 +12,9 @@ def a_plus_abs_b(a, b):
     5
     """
     if b < 0:
-        f = _____
+        f = sub
     else:
-        f = _____
+        f = add
     return f(a, b)
 
 # Q2
@@ -31,7 +31,7 @@ def two_of_three(a, b, c):
     >>> two_of_three(5, 5, 5)
     50
     """
-    return _____
+    return a*a + b*b + c*c - min(a, b, c)**2
 
 # Q3
 def largest_factor(n):
@@ -45,6 +45,11 @@ def largest_factor(n):
     1
     """
     "*** YOUR CODE HERE ***"
+    i = n
+    while i > 0:
+        i = i -1
+        if n % i == 0:
+            return i
 
 # Q4
 def if_function(condition, true_result, false_result):
@@ -90,12 +95,15 @@ def with_if_function():
 
 def c():
     "*** YOUR CODE HERE ***"
+    return False
 
 def t():
     "*** YOUR CODE HERE ***"
+    print(1)
 
 def f():
     "*** YOUR CODE HERE ***"
+    print(2)
 
 # Q5
 def hailstone(n):
@@ -114,6 +122,17 @@ def hailstone(n):
     7
     """
     "*** YOUR CODE HERE ***"
+    l = 1
+    print(n)
+    while(n!=1):
+        if n%2 == 0:
+            n /= 2
+            n = int(n)
+        else:
+            n = 3*n + 1
+        l += 1
+        print(n)
+    return l
 
 # Q6
 quine = """
