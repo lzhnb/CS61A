@@ -27,6 +27,7 @@ def taxicab(a, b):
     9
     """
     "*** YOUR CODE HERE ***"
+    return abs(street(a) - street(b))+abs(avenue(a) - avenue(b))
 
 def squares(s):
     """Returns a new list containing square roots of the elements of the
@@ -40,6 +41,7 @@ def squares(s):
     []
     """
     "*** YOUR CODE HERE ***"
+    return [round(unit**(0.5)) for unit in s if unit**(0.5)==round(unit**(0.5))]
 
 def g(n):
     """Return the value of G(n), computed recursively.
@@ -59,6 +61,10 @@ def g(n):
     True
     """
     "*** YOUR CODE HERE ***"
+    if n <= 3:
+        return n
+    else:
+        return g(n-1) + 2 * g(n-2) + 3 * g(n-3)
 
 def g_iter(n):
     """Return the value of G(n), computed iteratively.
@@ -78,6 +84,15 @@ def g_iter(n):
     True
     """
     "*** YOUR CODE HERE ***"
+    if n <= 3:
+        return n
+    else:
+        begin, middle, end, index = 1, 2, 3, 4
+        while index <= n:
+            value = end + 2 * middle + 3 * begin
+            begin, middle, end = middle, end, value
+            index += 1
+        return value
 
 def count_change(amount):
     """Return the number of ways to make change for amount.
@@ -95,6 +110,17 @@ def count_change(amount):
     True
     """
     "*** YOUR CODE HERE ***"
+    def count(mount, div):
+        if mount < div:
+            return 0
+        elif mount == div:
+            return 1
+        else:
+            main_count = count(mount-div, div)
+            sub_count = count(mount, 2*div)
+            return main_count + sub_count
+
+    return count(amount, 1)
 
 def print_move(origin, destination):
     """Print instructions to move a disk."""
@@ -129,6 +155,12 @@ def move_stack(n, start, end):
     """
     assert 1 <= start <= 3 and 1 <= end <= 3 and start != end, "Bad start/end"
     "*** YOUR CODE HERE ***"
+    if n == 1:
+        print_move(start, end)
+    else:
+        move_stack(n-1, start, 6-(start+end))
+        print_move(start, end)
+        move_stack(n-1, 6-(start+end), end)
 
 ###################
 # Extra Questions #
@@ -145,4 +177,4 @@ def make_anonymous_factorial():
     >>> check(HW_SOURCE_FILE, 'make_anonymous_factorial', ['Assign', 'AugAssign', 'FunctionDef', 'Recursion'])
     True
     """
-    return 'YOUR_EXPRESSION_HERE'
+    return (lambda f: lambda n: f(f, n))(lambda f, n: 1 if n==1 else n*f(f, n-1))
