@@ -27,6 +27,12 @@ class Fib():
 
     def next(self):
         "*** YOUR CODE HERE ***"
+        if self.value == 0:
+            next_fib = Fib(1)
+        else:
+            next_fib = Fib(self.value + self.prev)
+        next_fib.prev = self.value
+        return next_fib
 
     def __repr__(self):
         return str(self.value)
@@ -69,3 +75,36 @@ class VendingMachine:
     'Here is your soda.'
     """
     "*** YOUR CODE HERE ***"
+    def __init__(self, name, price):
+        self.name = name
+        self.price = price
+        self.stock = 0
+        self.input = 0
+        self.balance = 0
+    
+    def vend(self):
+        if self.stock == 0:
+            return 'Machine is out of stock.'
+        elif self.balance < self.price:
+            return 'You must deposit ${} more.'.format(self.price-self.balance)
+        elif self.balance == self.price:
+            self.balance = 0
+            self.stock -= 1
+            return 'Here is your {}.'.format(self.name)
+        elif self.balance > self.price:
+            cache = self.balance
+            self.balance = 0
+            self.stock -= 1
+            return 'Here is your {} and ${} change.'.format(self.name, (cache - self.price))
+    
+    def deposit(self, money):
+        if self.stock == 0:
+            return 'Machine is out of stock. Here is your ${}.'.format(money)
+        else:
+            self.balance += money
+            return 'Current balance: ${}'.format(self.balance)
+
+    def restock(self, stock):
+        self.stock += stock
+        return 'Current {} stock: {}'.format(self.name, self.stock)
+
