@@ -1,9 +1,22 @@
 (define (reverse lst)
-    'YOUR-CODE-HERE
+    (cond((null? lst) nil)
+         (else (append (reverse (cdr lst)) (list (car lst))))
+    )
 )
+
 (define (longest-increasing-subsequence lst)
-    'YOUR-CODE-HERE
+    (define (helper lst prev)
+        (cond((null? lst) nil)
+             ((<= (car lst) prev) (helper (cdr lst) prev))
+             (else (define with-first (append (list (car lst)) (helper (cdr lst) (car lst))))
+                   (define without-first (helper (cdr lst) prev))
+                   (if (> (length with-first) (length without-first)) with-first without-first)
+             )
+        )
+    )
+    (helper lst 0)
 )
+
 
 (define (cadr s) (car (cdr s)))
 (define (caddr s) (cadr (cdr s)))
@@ -51,33 +64,47 @@
 (define (multiplicand p) (caddr p))
 
 (define (derive-sum expr var)
-  'YOUR-CODE-HERE
+  (make-sum (derive (addend expr) var)
+            (derive (augend expr) var)
+  )
 )
 
 (define (derive-product expr var)
-  'YOUR-CODE-HERE
+  (make-sum (make-product (derive (multiplier expr) var) 
+                          (multiplicand expr))
+            (make-product (derive (multiplicand expr) var) 
+                          (multiplier expr))
+  )
 )
 
 ; Exponentiations are represented as lists that start with ^.
 (define (make-exp base exponent)
-  'YOUR-CODE-HERE
+  (cond ((= exponent 0) 1)
+        ((= exponent 1) base)
+        ((variable? base) (list '^ base exponent))
+        (else (make-product base (make-exp base (- exponent 1))))
+  )
 )
 
 (define (base exp)
-  'YOUR-CODE-HERE
+  (cadr exp)
 )
 
 (define (exponent exp)
-  'YOUR-CODE-HERE
+  (caddr exp)
 )
 
 (define (exp? exp)
-  'YOUR-CODE-HERE
+  (and (list? exp) (eq? (car exp) '^))
 )
 
 (define x^2 (make-exp 'x 2))
 (define x^3 (make-exp 'x 3))
 
 (define (derive-exp exp var)
-  'YOUR-CODE-HERE
+  (make-product (make-product (exponent exp) 
+                              (make-exp (base exp) (- (exponent exp) 1))
+                )
+                (derive (base exp) var)
+  )
 )
